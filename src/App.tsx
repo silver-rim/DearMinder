@@ -12,6 +12,7 @@ import AddReminder from "./pages/AddReminder";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SubscriptionPage from "./pages/SubscriptionPage"; 
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +33,8 @@ const App = () => (
               <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/add-reminder" element={<AddReminder />} />
-                <Route path="/subscription" element={<SubscriptionPage />} /> 
+                <Route path="/subscription" element={<SubscriptionPage />} />
+                <Route path="/settings" element={<Settings />} />
               </Route>
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
