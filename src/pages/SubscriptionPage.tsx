@@ -75,8 +75,7 @@ const SubscriptionPage = () => {
     setLoading(true);
 
     const amount = selectedPlan.yearlyPrice;
-    const currency = 'INR'; // Set currency to INR
-    // IMPORTANT: Use your actual Razorpay Test Key ID from .env
+    const currency = 'INR';
     const razorpayKeyId = "rzp_test_9ggOKsPYIeTZxB";
     if (!razorpayKeyId) {
         console.error("Razorpay Key ID not found in environment variables.");
@@ -85,59 +84,38 @@ const SubscriptionPage = () => {
         return;
     }
 
-
     try {
-      // --- Step 1: Call backend to create Razorpay Order --- (COMMENTED OUT FOR FRONTEND ONLY TEST)
-      // ... (backend order creation code remains commented out) ...
-      // --- End of Commented Out Backend Order Creation ---
-
-
-      // --- Step 2: Open Razorpay Checkout ---
       const options = {
-        key: razorpayKeyId, // Use the Test Key ID from .env
-        amount: amount * 100, // Amount in paisa (e.g., 5000 for ₹50, 25000 for ₹250)
+        key: razorpayKeyId,
+        amount: amount * 100,
         currency: currency,
         name: "DearMinder Subscription",
         description: `${selectedPlan.title} - Yearly Plan (Test)`,
-        // order_id: order_id, // Remove order_id for client-side only initiation
         handler: async function (response: any){
-          // setLoading(true); // No need to set loading true here, it's already true
-          console.log('Razorpay Response:', response); // Log the response for testing
-
-          // --- Step 3: Verify Payment on Backend --- (COMMENTED OUT FOR FRONTEND ONLY TEST)
-          // Verification is skipped in this frontend-only test setup.
-          // ... (backend verification code remains commented out) ...
-          // --- End of Commented Out Backend Verification ---
-
-          // Directly treat payment as successful for testing purposes
+          console.log('Razorpay Response:', response);
           toast({ title: 'Payment Successful! (Test - Not Verified)', description: `Subscribed to ${selectedPlan.title} (Yearly)!` });
-          // TODO: Add logic to update user's subscription state in AuthContext or redirect
-          setLoading(false); // Set loading false after handling success
-
+          setLoading(false);
         },
         prefill: {
-            name: user.user_metadata?.full_name || "Test User", // Added default for testing
-            email: user.email || "test@example.com", // Added default for testing
-            // contact: "9999999999" // Optional: Prefill contact number
+            name: user.user_metadata?.full_name || "Test User",
+            email: user.email || "test@example.com",
         },
         notes: {
             planId: selectedPlanId,
             frequency: 'yearly',
-            userId: user.id || 'test-user-id' // Added default for testing
+            userId: user.id || 'test-user-id'
         },
         theme: {
-            color: "#6366F1" // Example theme color (Indigo)
+            color: "#6366F1"
         },
-        // --- Add modal.ondismiss handler ---
         modal: {
             ondismiss: function() {
                 console.log('Checkout form closed by user.');
-                setLoading(false); // Reset loading state if modal is dismissed
+                setLoading(false);
             }
         }
       };
 
-      // Check if Razorpay is loaded
       if (!(window as any).Razorpay) {
           console.error("Razorpay SDK not loaded. Ensure the script tag is in index.html.");
           throw new Error("Razorpay SDK not loaded. Ensure the script tag is in index.html.");
@@ -152,18 +130,17 @@ const SubscriptionPage = () => {
                   description: `${response.error.description || 'Payment could not be processed.'} (Code: ${response.error.code || 'N/A'})`,
                   variant: 'destructive'
               });
-              setLoading(false); // Reset loading state on failure
+              setLoading(false);
       });
 
       rzp.open();
-      // Note: Do not set loading to false here, wait for handler, failure or dismiss callback
 
     } catch (error: any) {
       console.error("Payment Initiation Error:", error); 
       toast({ title: 'Error Initializing Payment', description: error.message || 'Could not initiate payment. Check console for details.', variant: 'destructive' });
-      setLoading(false); // Also set loading false if initialization fails
+      setLoading(false);
     }
-  };
+};
 
 
   return (
