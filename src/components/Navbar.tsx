@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, LogOut, CreditCard } from 'lucide-react'; 
+import { Menu, X, LogOut, CreditCard, Settings as SettingsIcon } from 'lucide-react'; 
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -95,40 +95,45 @@ const Navbar = () => {
           {/* Conditional Rendering based on user login status */} 
           {user ? (
             <> {/* Logged-in links */} 
-              <NavLink href="/dashboard" isButton variant="outline">Dashboard</NavLink>
-              <NavLink href="/subscription" isButton variant="outline">Subscription</NavLink>
+              // ...
+              {/* In the mobile menu, add this inside the user ? block */}
+              <NavLink href="/dashboard" className="block py-1 font-medium">Dashboard</NavLink>
+              <NavLink href="/settings" className="block py-1 font-medium">Settings</NavLink>
+              <NavLink href="/subscription" className="block py-1 font-medium">Subscription</NavLink>
+              <hr className="my-2"/>
               <Button 
-                size="sm" 
                 variant="outline" 
-                className="rounded-full text-red-500 border-red-300 hover:border-red-500 hover:text-red-600"
+                className="w-full justify-start text-red-500 border-red-300 hover:border-red-500 hover:text-red-600"
                 onClick={handleSignOut}
               >
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
-              </Button>
-            </>
-          ) : (
-            <> {/* Logged-out links and buttons */} 
-              <NavLink href="#features">Features</NavLink>
-              <NavLink href="#pricing">Pricing</NavLink>
-              <NavLink href="#testimonials">Testimonials</NavLink>
-              <Button 
-                size="sm" 
-                variant="outline" 
-                className="rounded-full"
-                onClick={handleLogin}
-              >
-                Log in
-              </Button>
-              <Button 
-                size="sm" 
-                className="bg-dearminder-purple hover:bg-dearminder-purple-dark rounded-full"
-                onClick={handleGetStarted}
-              >
-                Get Started
-              </Button>
-            </>
-          )}
+                   <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <> {/* Logged-out links and buttons */} 
+                <NavLink href="#features" className="block py-1">Features</NavLink>
+                <NavLink href="#pricing" className="block py-1">Pricing</NavLink>
+                <NavLink href="#testimonials" className="block py-1">Testimonials</NavLink>
+                <hr className="my-2"/>
+                <div className="flex flex-col space-y-2 pt-2">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-center rounded-full"
+                    onClick={handleLogin}
+                  >
+                    Log in
+                  </Button>
+                  <Button 
+                    className="w-full justify-center bg-dearminder-purple hover:bg-dearminder-purple-dark rounded-full"
+                    onClick={handleGetStarted}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Mobile menu button */}
