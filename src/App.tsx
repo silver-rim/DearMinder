@@ -13,6 +13,8 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SubscriptionPage from "./pages/SubscriptionPage"; 
 import Settings from "./pages/Settings";
+import UpdatePassword from "./pages/UpdatePassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               
               {/* Protected Routes */}
               <Route element={<ProtectedRoute />}>
@@ -35,6 +38,7 @@ const App = () => (
                 <Route path="/add-reminder" element={<AddReminder />} />
                 <Route path="/subscription" element={<SubscriptionPage />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/update-password" element={<UpdatePassword />} />
               </Route>
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
