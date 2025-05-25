@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 import os
 from flask_cors import CORS
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
 import requests
 
 # Load environment variables
@@ -12,31 +10,29 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# SendGrid configuration
-SENDGRID_API_KEY = '871775c0-1687-4034-ad73-38b27d7fd977'  # Replace with your SendGrid API key
-FROM_EMAIL = 'eng23ct0025@dsu.edu.in'
-
-# TextBelt configuration (for SMS)
-TEXTBELT_API_KEY = 'c47c962e4089c18bcaee264e6ba4b3d63a662fafeYPtx1cxYC2d78s2S2u8VZG5n'
-DEFAULT_PHONE = '+918087861289'
+# Google Apps Script configuration
+GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNNIQE5LzynlXYsbeURyyo8co7plSAGQ8SzNVXqtKeHsXl9vlSvFT-RTMISv6YeSjXqA/execL'  # Replace with your deployed script URL
+FROM_EMAIL = 'eng23ct0025@dsu.edu.in'  # Your authorized Gmail address
 
 def send_email(to_email: str, subject: str, body: str):
     try:
         print(f"Preparing to send email to {to_email}")
-        message = Mail(
-            from_email=FROM_EMAIL,
-            to_emails=to_email,
-            subject=subject,
-            plain_text_content=body
-        )
+        payload = {
+            'to': to_email,
+            'subject': subject,
+            'html': body
+        }
         
-        print("Initializing SendGrid client...")
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        print("Sending request to Google Apps Script...")
+        response = requests.post(GOOGLE_SCRIPT_URL, json=payload)
+        result = response.json()
         
-        print("Sending email...")
-        response = sg.send(message)
-        print(f"Email sent successfully! Status code: {response.status_code}")
-        return True
+        if result.get('success'):
+            print("Email sent successfully!")
+            return True
+        else:
+            print(f"Failed to send email: {result.get('error')}")
+            return False
     except Exception as e:
         print(f"Error sending email: {str(e)}")
         return False
@@ -106,4 +102,4 @@ def send_notification():
         }), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000) 
+    app.run(debug=True, port=5000)
