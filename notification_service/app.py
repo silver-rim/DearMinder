@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Google Apps Script configuration
-GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfN4_ORJIqZK8r9GcTs293ENxd3hyrSoUa1D8SAW78L2siU0t5iTzPI5b8CKnN9cv7CQ/exec'  # Remove the 'L' at the end
+GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxTXBnFOFKzLFsYgY3qJtpz_BSMxk554AvWBlCd2jWcryzHTpA0HYkxUihlDGDr0KFzQ/exec'  # Remove the 'L' at the end
 FROM_EMAIL = 'eng23ct0025@dsu.edu.in'  # Your authorized Gmail address
 
 def send_email(to_email: str, subject: str, body: str):
@@ -108,4 +108,4 @@ def send_notification():
         }), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
