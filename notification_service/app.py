@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Google Apps Script configuration
-GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNNIQE5LzynlXYsbeURyyo8co7plSAGQ8SzNVXqtKeHsXl9vlSvFT-RTMISv6YeSjXqA/execL'  # Replace with your deployed script URL
+GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfN4_ORJIqZK8r9GcTs293ENxd3hyrSoUa1D8SAW78L2siU0t5iTzPI5b8CKnN9cv7CQ/exec'  # Remove the 'L' at the end
 FROM_EMAIL = 'eng23ct0025@dsu.edu.in'  # Your authorized Gmail address
 
 def send_email(to_email: str, subject: str, body: str):
@@ -23,15 +23,21 @@ def send_email(to_email: str, subject: str, body: str):
             'html': body
         }
         
-        print("Sending request to Google Apps Script...")
+        print(f"Sending request to Google Apps Script: {GOOGLE_SCRIPT_URL}")
         response = requests.post(GOOGLE_SCRIPT_URL, json=payload)
-        result = response.json()
+        print(f"Response status code: {response.status_code}")
+        print(f"Response content: {response.text}")
         
-        if result.get('success'):
-            print("Email sent successfully!")
-            return True
-        else:
-            print(f"Failed to send email: {result.get('error')}")
+        try:
+            result = response.json()
+            if result.get('success'):
+                print("Email sent successfully!")
+                return True
+            else:
+                print(f"Failed to send email: {result.get('error')}")
+                return False
+        except Exception as e:
+            print(f"Error parsing response JSON: {str(e)}")
             return False
     except Exception as e:
         print(f"Error sending email: {str(e)}")
