@@ -11,8 +11,11 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Google Apps Script configuration
-GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxTXBnFOFKzLFsYgY3qJtpz_BSMxk554AvWBlCd2jWcryzHTpA0HYkxUihlDGDr0KFzQ/exec'  # Remove the 'L' at the end
-FROM_EMAIL = 'eng23ct0025@dsu.edu.in'  # Your authorized Gmail address
+GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxTXBnFOFKzLFsYgY3qJtpz_BSMxk554AvWBlCd2jWcryzHTpA0HYkxUihlDGDr0KFzQ/exec'
+FROM_EMAIL = 'eng23ct0025@dsu.edu.in'
+
+# Default phone number for SMS (optional)
+DEFAULT_PHONE = '+918087861289'
 
 def send_email(to_email: str, subject: str, body: str):
     try:
